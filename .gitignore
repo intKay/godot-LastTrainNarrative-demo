@@ -1,3 +1,25 @@
 # Godot 4+ specific ignores
 .godot/
 /android/
+
+# Old Godot import cache
+.import/
+
+# Exported builds
+build/
+builds/
+exports/
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# IDE files
+.vscode/
+.idea/
+
+# Logs and temp files
+*.log
+tmp/
+temp/
