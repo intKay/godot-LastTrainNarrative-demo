@@ -73,5 +73,7 @@ Godot 4.6 + GDScript + Control UI + JSON 数据驱动互动叙事原型。当前
 
 ## Git 工作流
 
-- 每次修改完成后执行 `git add -A`、`git commit -m "简短说明"`、`git push`。
+- 只在完成一轮 playtest 并确认无误后 commit，不要在开发中途随意提交。
+- 提交前运行 `/playtest-check` 查看 F5 测试清单，按清单验证通过后 commit。
+- 执行：`git add -A && git commit -m "简短说明" && git push`
 - 不要回滚用户或其他 Agent 的改动。
