@@ -16,7 +16,8 @@
         },
         "set_flags": ["asked_broadcast"],
         "feedback_text": "广播灯亮了一下，又熄灭。\n半秒后，它用和你相同的语气问：\n“你希望这里是哪一站？”",
-        "broadcast_light_color": [1.0, 0.4, 0.0]
+        "broadcast_light_color": [1.0, 0.4, 0.0],
+        "next_node": "station_round_2"
       },
       {
         "id": "check_exit",
@@ -27,7 +28,8 @@
         },
         "set_flags": ["checked_exit"],
         "feedback_text": "出口指示灯亮起。\n屏幕显示：离站许可尚未生成。",
-        "broadcast_light_color": [0.27, 0.53, 1.0]
+        "broadcast_light_color": [0.27, 0.53, 1.0],
+        "next_node": "station_round_2"
       },
       {
         "id": "wait_train",
@@ -38,7 +40,8 @@
         },
         "set_flags": ["waited_train"],
         "feedback_text": "广播终于响起。\n“请继续等待。故事正在保持稳定。”",
-        "broadcast_light_color": [0.27, 1.0, 0.27]
+        "broadcast_light_color": [0.27, 1.0, 0.27],
+        "next_node": "station_round_2"
       },
       {
         "id": "observe_board",
@@ -49,7 +52,60 @@
         },
         "set_flags": ["observed_board"],
         "feedback_text": "公告屏刷新了一次。\n没有车次，只有一行字：\n观察行为已记录。",
-        "broadcast_light_color": [1.0, 0.67, 0.0]
+        "broadcast_light_color": [1.0, 0.67, 0.0],
+        "next_node": "station_round_2"
+      }
+    ]
+  },
+  {
+    "node_id": "station_round_2",
+    "visible_text": "广播灯重新亮起。\n电子公告屏上的车次没有变化。\n只有目的地一栏开始闪烁。",
+    "options": [
+      {
+        "id": "demand_explanation",
+        "text": "A. 要求系统解释刚才的记录",
+        "last_choice_label": "要求解释",
+        "state_delta": {
+          "doubt": 1,
+          "anomaly": 1
+        },
+        "set_flags": ["demanded_explanation"],
+        "feedback_text": "系统停顿了半秒。\n电子公告屏显示：解释请求已记录。\n广播没有回答问题。",
+        "broadcast_light_color": [1.0, 0.2, 0.0]
+      },
+      {
+        "id": "rewrite_destination",
+        "text": "B. 尝试改写公告屏上的目的地",
+        "last_choice_label": "改写目的地",
+        "state_delta": {
+          "control": 1,
+          "anomaly": 1
+        },
+        "set_flags": ["rewrote_destination"],
+        "feedback_text": "目的地一栏短暂变成空白。\n随后恢复为：校准中。\n系统提示：用户输入未授权。",
+        "broadcast_light_color": [1.0, 0.6, 0.0]
+      },
+      {
+        "id": "keep_waiting",
+        "text": "C. 继续等待系统安排下一班车",
+        "last_choice_label": "继续等待",
+        "state_delta": {
+          "obedience": 1
+        },
+        "set_flags": ["kept_waiting_r2"],
+        "feedback_text": "广播灯稳定下来。\n“感谢配合。叙事稳定性上升。”\n电子公告屏没有再闪烁。",
+        "broadcast_light_color": [0.27, 1.0, 0.27]
+      },
+      {
+        "id": "inspect_exit",
+        "text": "D. 离开选项区，检查出口",
+        "last_choice_label": "检查出口",
+        "state_delta": {
+          "control": 1
+        },
+        "set_flags": ["inspected_exit"],
+        "feedback_text": "出口指示灯亮起。\n屏幕显示：离站许可正在生成。\n进度停在 1%。",
+        "broadcast_light_color": [0.27, 0.53, 1.0]
       }
     ]
   }

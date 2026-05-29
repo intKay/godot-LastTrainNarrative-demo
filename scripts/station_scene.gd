@@ -1,10 +1,14 @@
 extends Control
 
-enum Phase { INTRO, INVESTIGATED, FINISHED }
+enum Phase { INTRO, INVESTIGATED, FINISHED, END }
 var phase: int = Phase.INTRO
 
+var story_data: Array = []
 var round_options: Array = []
 var notice_board_data: Dictionary = {}
+var current_round_id: String = "station_round_1"
+var next_round_id: String = ""
+var has_next_round: bool = false
 
 @onready var notice_btn: Button = $RootMargin/VBox/StationHBox/NoticeBoardButton
 @onready var broadcast_light: ColorRect = $RootMargin/VBox/StationHBox/BroadcastLight
@@ -26,19 +30,38 @@ func _ready() -> void:
 
 
 func _load_data() -> void:
-	var story_data = DataLoader.load_json("res://data/story_nodes.json")
+	story_data = DataLoader.load_json("res://data/story_nodes.json")
 	if story_data and story_data.size() > 0:
 		for node in story_data:
 			if node.node_id == "station_intro":
 				story_label.text = node.visible_text
-			elif node.node_id == "station_round_1":
-				round_options = node.options
+
+	_load_round_data("station_round_1")
 
 	var interact_data = DataLoader.load_json("res://data/interactables.json")
 	if interact_data and interact_data.size() > 0:
 		for obj in interact_data:
 			if obj.object_id == "notice_board":
 				notice_board_data = obj
+
+
+func _load_round_data(round_id: String) -> void:
+	current_round_id = round_id
+	round_options = []
+	has_next_round = false
+	for node in story_data:
+		if node.node_id == round_id:
+			if node.has("visible_text"):
+				story_label.text = node.visible_text
+			if node.has("options"):
+				round_options = node.options
+				for opt in node.options:
+					if opt.has("next_node") and opt.next_node != "":
+						has_next_round = true
+						break
+	_hide_choices()
+	_update_broadcast_light(Color(0.3, 0.3, 0.3))
+	phase = Phase.INTRO
 
 
 func _apply_state_delta(delta: Dictionary) -> void:
@@ -59,12 +82,41 @@ func _make_choice(index: int) -> void:
 	_apply_state_delta(opt.state_delta)
 	GameState.last_choice_label = opt.last_choice_label
 	GameState.choice_history.append(opt.last_choice_label)
-	GameState.current_stage = 1
+	GameState.current_stage += 1
 	story_label.text = opt.feedback_text
 	_disable_choices()
 	var c = opt.broadcast_light_color
 	_update_broadcast_light(Color(c[0], c[1], c[2]))
+
+	next_round_id = opt.get("next_node", "")
 	phase = Phase.FINISHED
+	if next_round_id != "":
+		_show_continue()
+
+
+func _show_continue() -> void:
+	choice_a.text = "继续"
+	choice_b.hide()
+	choice_c.hide()
+	choice_d.hide()
+	choice_a.disabled = false
+	if choice_a.pressed.is_connected(_on_choice_a):
+		choice_a.pressed.disconnect(_on_choice_a)
+	if not choice_a.pressed.is_connected(_on_continue):
+		choice_a.pressed.connect(_on_continue)
+
+
+func _on_continue() -> void:
+	if choice_a.pressed.is_connected(_on_continue):
+		choice_a.pressed.disconnect(_on_continue)
+	if not choice_a.pressed.is_connected(_on_choice_a):
+		choice_a.pressed.connect(_on_choice_a)
+
+	var target_id: String = next_round_id if next_round_id != "" else "station_round_2"
+	_load_round_data(target_id)
+	choice_a.text = round_options[0].text if round_options.size() > 0 else ""
+	_show_choices()
+	phase = Phase.INVESTIGATED
 
 
 func _hide_choices() -> void:
@@ -95,6 +147,10 @@ func _on_notice_board() -> void:
 		var label: String = GameState.last_choice_label
 		var template: String = notice_board_data.get("echo_text_template", "电子公告屏显示：23:47  末班车\n目的地：校准中\n上一行为：%s")
 		story_label.text = template % label
+		if not has_next_round:
+			phase = Phase.END
+	elif phase == Phase.END:
+		story_label.text = notice_board_data.get("slice_end_text", "切片扩展结束。\n当前版本已记录两次主线行为。")
 
 
 func _disable_choices() -> void:
