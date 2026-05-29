@@ -56,13 +56,13 @@
 2. `station_scene.gd` `_on_notice_board` 适配最后一轮结束语/残影
 3. `interactables.json` 新增 `three_rounds_end_text` / `echo_text_final`
 
+### 阶段 2.4：四个调查物完整化 ✅
+
+1. `scenes/station_scene.tscn` 新增 InteractHBox + 时钟/广播灯/出口门 三个 Button
+2. `data/interactables.json` 追加 clock / broadcast_light / exit_gate 三个对象
+3. `scripts/station_scene.gd` 新增 `_get_interactable_text` + 3 个调查 handler
+
 ## 待完成
-
-### 阶段 2.4：四个调查物完整化 📋
-
-1. 时钟加入交互逻辑
-2. 广播灯加入点击调查
-3. 出口门加入交互逻辑
 4. 四个调查物按轮次差异化文本
 
 ### 阶段 2.5：扩展完整三问校准 📋

@@ -72,6 +72,21 @@ layout_mode = 2
 text = "广播"
 theme_override_font_sizes/font_size = 12
 
+[node name="InteractHBox" type="HBoxContainer" parent="RootMargin/VBox"]
+layout_mode = 2
+
+[node name="ClockButton" type="Button" parent="RootMargin/VBox/InteractHBox"]
+layout_mode = 2
+text = "时钟"
+
+[node name="BroadcastLightButton" type="Button" parent="RootMargin/VBox/InteractHBox"]
+layout_mode = 2
+text = "广播灯"
+
+[node name="ExitGateButton" type="Button" parent="RootMargin/VBox/InteractHBox"]
+layout_mode = 2
+text = "出口门"
+
 [node name="StoryLabel" type="Label" parent="RootMargin/VBox"]
 custom_minimum_size = Vector2(0, 160)
 layout_mode = 2

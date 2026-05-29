@@ -6,6 +6,7 @@ var phase: int = Phase.INTRO
 var story_data: Array = []
 var round_options: Array = []
 var notice_board_data: Dictionary = {}
+var interactables_data: Dictionary = {}
 var current_round_id: String = "station_round_1"
 var next_round_id: String = ""
 var has_next_round: bool = false
@@ -17,6 +18,9 @@ var has_next_round: bool = false
 @onready var choice_b: Button = $RootMargin/VBox/ChoiceBButton
 @onready var choice_c: Button = $RootMargin/VBox/ChoiceCButton
 @onready var choice_d: Button = $RootMargin/VBox/ChoiceDButton
+@onready var clock_btn: Button = $RootMargin/VBox/InteractHBox/ClockButton
+@onready var broadcast_light_btn: Button = $RootMargin/VBox/InteractHBox/BroadcastLightButton
+@onready var exit_gate_btn: Button = $RootMargin/VBox/InteractHBox/ExitGateButton
 
 
 func _ready() -> void:
@@ -27,6 +31,9 @@ func _ready() -> void:
 	choice_b.pressed.connect(_on_choice_b)
 	choice_c.pressed.connect(_on_choice_c)
 	choice_d.pressed.connect(_on_choice_d)
+	clock_btn.pressed.connect(_on_clock)
+	broadcast_light_btn.pressed.connect(_on_broadcast_light)
+	exit_gate_btn.pressed.connect(_on_exit_gate)
 
 
 func _load_data() -> void:
@@ -41,6 +48,7 @@ func _load_data() -> void:
 	var interact_data = DataLoader.load_json("res://data/interactables.json")
 	if interact_data and interact_data.size() > 0:
 		for obj in interact_data:
+			interactables_data[obj.object_id] = obj
 			if obj.object_id == "notice_board":
 				notice_board_data = obj
 
@@ -187,3 +195,24 @@ func _on_choice_c() -> void:
 
 func _on_choice_d() -> void:
 	_make_choice(3)
+
+
+func _get_interactable_text(object_id: String) -> String:
+	var obj = interactables_data.get(object_id, {})
+	var texts = obj.get("texts_by_stage", {})
+	return texts.get(current_round_id, "")
+
+
+func _on_clock() -> void:
+	story_label.text = _get_interactable_text("clock")
+	GameState.flags["checked_clock"] = true
+
+
+func _on_broadcast_light() -> void:
+	story_label.text = _get_interactable_text("broadcast_light")
+	GameState.flags["checked_broadcast_light"] = true
+
+
+func _on_exit_gate() -> void:
+	story_label.text = _get_interactable_text("exit_gate")
+	GameState.flags["checked_exit_gate"] = true

@@ -14,5 +14,35 @@
     "slice_end_text": "切片扩展结束。\n当前版本已记录两次主线行为。",
     "three_rounds_end_text": "当前版本已记录三次主线行为。\n下一阶段将根据状态生成结局判断。",
     "set_flags_on_click": ["checked_notice_board"]
+  },
+  {
+    "object_id": "clock",
+    "display_name": "时钟",
+    "texts_by_stage": {
+      "station_round_1": "时钟显示 23:47。秒针没有移动。",
+      "station_round_2": "时钟仍是 23:47。分钟数字短暂变成 23:46，又恢复原状。",
+      "station_round_3": "时钟没有显示时间。屏幕上只有一行字：记录时长不足。"
+    },
+    "set_flags_on_click": ["checked_clock"]
+  },
+  {
+    "object_id": "broadcast_light",
+    "display_name": "广播灯",
+    "texts_by_stage": {
+      "station_round_1": "广播灯亮着。没有声音传出来。",
+      "station_round_2": "广播灯闪了一下，像是在等待你的下一句话。",
+      "station_round_3": "广播灯保持常亮。它不再伪装成设备。"
+    },
+    "set_flags_on_click": ["checked_broadcast_light"]
+  },
+  {
+    "object_id": "exit_gate",
+    "display_name": "出口门",
+    "texts_by_stage": {
+      "station_round_1": "出口门没有上锁。屏幕显示：离站许可尚未生成。",
+      "station_round_2": "出口门旁的屏幕正在刷新：许可生成中。",
+      "station_round_3": "出口门打开了一条缝。屏幕显示：等待最终判断。"
+    },
+    "set_flags_on_click": ["checked_exit_gate"]
   }
 ]
