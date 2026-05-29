@@ -144,3 +144,38 @@ ending: control_ending ✅
 1. 用户亲自用 Godot F5 跑三条路径（顺从/怀疑/控制），确认实机通过
 2. 实机通过后生成 `docs/23_phase2_9_v0_1_completion_report.md` 完成报告
 3. 再考虑按 `docs/10_playtest_checklist.md` 找人试玩
+
+---
+
+## 附录：Godot F5 实机测试结果
+
+本附录于代码级验收完成后，由用户在 Godot 4.6 编辑器中实机测试后追加。
+
+### 测试结论
+
+**功能全部通过 ✅**
+
+- 三问校准正常
+- 三轮主线正常
+- 四调查物正常
+- 三类结局入口正常
+- UI 字号调整生效（SystemLabel 18 / InstructionLabel 16）
+
+### 玩家反馈
+
+**文本仍然偏小。** 当前全项目字号分布：
+
+| 场景 | 节点 | 当前字号 |
+|------|------|:--------:|
+| 校准 | TitleLabel | 24 |
+| 校准 | InstructionLabel | 16 |
+| 校准 | QuestionLabel | 18 |
+| 校准 | StatusLabel | 16 |
+| 车站 | SystemNameLabel | 14 |
+| 车站 | StoryLabel | 默认(~16) |
+| 车站 | 全部 Button | 默认(~16) |
+| 结局 | TitleLabel | 24 |
+| 结局 | SystemLabel | 18 |
+| 结局 | BodyLabel | 18 |
+
+后续可按需统一增大：车站 `StoryLabel`（主阅读区）+ 全部 Button 字号 +2。本阶段不做修改。
