@@ -6,7 +6,7 @@
 
 ## calibration_questions.json
 
-用于存储开场三问。
+用于存储开场三问。当前已完成第一问，v0.1 扩展至三问。
 
 字段建议：
 
@@ -46,7 +46,7 @@
 
 ## story_nodes.json
 
-用于存储主线节点。
+用于存储主线节点。v0.1 包含三轮车站选择（station_round_1/2/3），通过 `next_node` 串联。
 
 字段建议：
 
@@ -95,7 +95,7 @@
 
 ## interactables.json
 
-用于存储可点击调查元素。
+用于存储可点击调查元素。v0.1 包含四个交互物：电子公告屏、时钟、广播灯、出口门。
 
 字段建议：
 
@@ -127,11 +127,41 @@
 
 建议统一：
 
-- calibration_1
-- station_round_1
+- calibration_1, calibration_2, calibration_3
+- station_round_1, station_round_2, station_round_3
 - checked_notice_board
+- demand_explanation, rewrite_destination, keep_waiting, inspect_exit
 
 不要混用中文 ID 和英文 ID。显示文本可以是中文，程序 ID 建议英文。
+
+## endings.json（阶段 2.6 时创建）
+
+用于存储三个结局的文本和触发条件。
+
+建议格式：
+
+```json
+[
+  {
+    "ending_id": "obedience_ending",
+    "name": "顺从结局",
+    "condition": "obedience_highest",
+    "text": "系统记录到：你更愿意等待流程自行推进。\n广播说：\n“感谢配合。你的故事保持稳定。”"
+  },
+  {
+    "ending_id": "doubt_ending",
+    "name": "怀疑结局",
+    "condition": "doubt_highest",
+    "text": "系统记录到：你多次试图确认规则边界。\n广播没有回答问题。\n它只是把你的问题重新播放了一遍。"
+  },
+  {
+    "ending_id": "control_ending",
+    "name": "控制结局",
+    "condition": "control_highest",
+    "text": "系统记录到：你优先寻找出口、许可和可操作对象。\n出口门亮起。\n但门后的站台编号仍在生成中。"
+  }
+]
+```
 
 ## 数据编写原则
 

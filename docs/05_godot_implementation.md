@@ -52,35 +52,22 @@
 project/
   project.godot
   scenes/
-    main.tscn
     calibration_screen.tscn
     station_scene.tscn
-    dialogue_box.tscn
-    choice_panel.tscn
-    investigation_popup.tscn
-    ending_screen.tscn
+    main_test.tscn
   scripts/
     game_state.gd
-    mock_ai_manager.gd
+    data_loader.gd
     calibration_screen.gd
     station_scene.gd
-    choice_panel.gd
-    interactable_object.gd
-    world_state_controller.gd
-    ending_manager.gd
   data/
     calibration_questions.json
     story_nodes.json
     interactables.json
-    endings.json
-  assets/
-    art/
-    audio/
-    fonts/
   docs/
 ```
 
-> 当前一分钟切片阶段：`ending_screen.tscn`、`endings.json`、`ending_manager.gd`、`assets/` 暂不创建，音频和美术文件延后到阶段 3。`dialogue_box.tscn`、`choice_panel.tscn`、`investigation_popup.tscn` 可作为独立场景，也可合并到 `station_scene.tscn` 中。
+> 当前 v0.1 阶段：`ending_screen.tscn`、`endings.json`、`ending_manager.gd` 在阶段 2.6 时创建。音频和美术文件延后到阶段 2.7 之后。
 
 ## 场景职责
 
@@ -110,7 +97,7 @@ project/
 
 ### ending_screen.tscn
 
-（切片阶段暂不创建，延后到后续阶段）
+v0.1 阶段 2.6 时创建。负责显示三类结局文本。
 
 ## 脚本职责
 
@@ -132,7 +119,7 @@ project/
 
 ### mock_ai_manager.gd
 
-读取 JSON 数据并返回当前节点内容。
+v0.1 暂不需要专门的 MockAIManager 脚本。DataLoader + JSON 直接读取即可。当剧情节点复杂度提升（需要条件分支）时可创建。
 
 ### calibration_screen.gd
 
@@ -156,7 +143,7 @@ project/
 
 ### ending_manager.gd
 
-（切片阶段暂不创建，延后到后续阶段）
+v0.1 阶段 2.6 时创建。按状态值（doubt/control/obedience）最高维度触发对应结局。
 
 ## UI 节点建议
 
@@ -179,27 +166,31 @@ StationScene (Control)
 
 ## 开发顺序
 
-### 阶段 0：最小 UI 玩具
+### 已完成
 
-1. 创建 Godot 项目
-2. 建一个界面
-3. 添加 Label 和 4 个 Button
-4. 点击按钮后更新文本
-5. 记录状态值
+| 阶段 | 内容 | 状态 |
+|------|------|------|
+| 阶段 0 | 最小 UI 玩具：Label + 4 Button + 状态记录 | ✅ |
+| 阶段 1 | 一分钟垂直切片：校准→车站→公告牌→选择→残影 | ✅ |
+| 阶段 1.1 | 切片打磨：编译警告修复、称呼统一、文本打磨 | ✅ |
+| 阶段 2 | 基线固化 + data/ 目录 + AGENTS.md 规则 | ✅ |
+| 阶段 2.1 | JSON 数据驱动迁移 | ✅ |
 
-### 阶段 1：垂直切片
+### 后续阶段
 
-1. 实现 calibration_screen
-2. 实现一个校准问题
-3. 切换到 station_scene
-4. 实现公告牌点击调查
-5. 实现一次主线选择
-6. 实现广播灯变化
-7. 实现公告牌选择残影
+| 阶段 | 内容 |
+|------|------|
+| 阶段 2.2 | 扩展第二轮车站选择（开发中） |
+| 阶段 2.3 | 第三轮车站选择 |
+| 阶段 2.4 | 四个调查物完整化（时钟/广播灯/出口门交互） |
+| 阶段 2.5 | 扩展完整三问校准 |
+| 阶段 2.6 | 三个低保真结局 |
+| 阶段 2.7 | 低保真 UI / 文本打磨 |
+| 阶段 2.8 | 完整试玩与修正 |
 
 ## 实现原则
 
 1. 先功能，后美术
-2. 先一分钟切片，再扩展完整流程
+2. 先一分钟切片（已完成），再扩展完整 v0.1 流程
 3. 先 MockAI，后真实 API
 4. 所有复杂功能后置

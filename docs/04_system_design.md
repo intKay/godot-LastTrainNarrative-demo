@@ -40,6 +40,8 @@ var player_name: String = ""
 
 v0.1 暂时不加入 rescue / empathy，因为背包和沉默乘客支线已删除。
 
+> v0.1 完整原型：GameState 当前已实现，后续不再移除字段，只增量添加（如结局触发表）。
+
 ## Story Node 数据结构
 
 每个故事节点包含：
@@ -80,16 +82,17 @@ v0.1 暂时不加入 rescue / empathy，因为背包和沉默乘客支线已删�
 ```json
 {
   "object_id": "notice_board",
-  "display_name": "公告牌",
-  "texts_by_stage": {
-    "1": "公告牌显示：23:47，末班车即将进站。"
+  "display_name": "电子公告屏",
+  "texts_by_hint": {
+    "light": "电子公告屏显示：23:47，末班车即将进站。"
   },
-  "set_flags_on_click": ["checked_notice_board"],
-  "visual_state_by_stage": {
-    "1": "normal"
-  }
+  "investigated_text": "公告屏依旧亮着。\n你已浏览过公告屏。",
+  "echo_text_template": "电子公告屏显示：23:47  末班车\n目的地：校准中\n上一行为：%s",
+  "set_flags_on_click": ["checked_notice_board"]
 }
 ```
+
+v0.1 包含四个交互物：电子公告屏、时钟、广播灯、出口门。各自在 `interactables.json` 中配置。
 
 ## 交互物影响规则
 
@@ -176,3 +179,28 @@ MockAIManager 不是真 AI，而是预制文本读取器。
 新增剧情节点、交互物时，优先修改 JSON 数据，不重写核心逻辑。
 
 v0.1 的代码目标是稳定跑通，不追求复杂架构。
+
+## 结局系统（低保真设计）
+
+### 触发方式
+
+三问 + 三轮选择结束后，比较 `doubt`、`control`、`obedience` 三个值的最高维度。
+
+- `obedience` 最高 → 顺从结局
+- `doubt` 最高 → 怀疑结局
+- `control` 最高 → 控制结局
+- `anomaly` 不影响结局判断，仅用于文本中的异常强度
+
+### 数据来源
+
+`endings.json`（阶段 2.6 时创建），包含三个结局的 ID、触发条件判断和结局文本。
+
+### 显示方式
+
+结束当前车站场景后，加载 `ending_screen.tscn` 显示对应结局文本。允许玩家重新开始以体验不同结局。
+
+### 设计原则
+
+- 不突然说教
+- 不直接解释"你在被测试"
+- 结局用冷淡 UI 语言描述系统如何解读玩家的选择模式
