@@ -1,100 +1,67 @@
 # 叙事校准程序 / 末班车站
 
-Godot 4.6 + GDScript + Control UI + JSON 数据驱动互动叙事原型。v0.2 增强版原型（5～8 分钟可外部试玩）。
+Godot 4.6 + GDScript + Control UI + JSON 数据驱动互动叙事原型。当前进入 v0.2，目标是 5-8 分钟外部试玩增强版。
 
-> **v0.2 开发前必须首先阅读：**
-> - `docs/101_v0_2_requirement_spec.md`（需求规格）
-> - `docs/102_v0_2_opencode_execution_constraints.md`（执行约束）
-> - 本文档范围约束优先级低于 docs/102
-> - 遇到矛盾时以 docs/102 为准
+## 必读顺序
 
-## 项目结构
+- v0.2 开发前先读 `docs/101_v0_2_requirement_spec.md` 和 `docs/102_v0_2_opencode_execution_constraints.md`。
+- `docs/102_v0_2_opencode_execution_constraints.md` 是范围约束最高优先级；临时想法与其冲突时，以 docs/102 为准。
+- `opencode.json` 已加载 `AGENTS.md` 和 `docs/*.md`，不要把长需求全文复制到本文件。
 
-```
-├── data/                    # JSON 数据文件
-│   ├── calibration_questions.json  # 校准问题
-│   ├── story_nodes.json            # 故事节点
-│   ├── interactables.json          # 调查元素
-│   └── endings.json                # 结局
-├── scenes/                  # Godot 场景
-│   ├── calibration_screen.tscn     # 校准界面（入口）
-│   ├── station_scene.tscn          # 车站主场景
-│   ├── ending_screen.tscn          # 结局画面
-│   └── main_test.tscn              # 测试场景
-├── scripts/                 # GDScript
-│   ├── game_state.gd               # Autoload 状态管理
-│   ├── data_loader.gd              # JSON 加载器
-│   ├── calibration_screen.gd       # 校准逻辑
-│   ├── station_scene.gd            # 车站逻辑
-│   └── ending_screen.gd            # 结局逻辑
-├── docs/*.md                # 设计文档与阶段报告
-├── .opencode/               # OpenCode 配置
-├── project.godot            # Godot 工程文件
-└── opencode.json            # OpenCode 配置
-```
+## 运行入口
 
-## 运行方式
+- 用 Godot 打开 `project.godot`，按 F5 运行。
+- `project.godot` 当前入口是 `res://scenes/calibration_screen.tscn`。
+- Autoload 只有 `GameState="*res://scripts/game_state.gd"`；未经用户明确批准，不要改 Autoload。
 
-- F5 运行，入口 `calibration_screen.tscn` → `station_scene.tscn`
-- Autoload: `GameState`（`scripts/game_state.gd`）
+## 核心数据流
 
-## 核心状态
+- `scripts/data_loader.gd` 只负责读取 JSON。
+- `scripts/calibration_screen.gd` 读取 `data/calibration_questions.json`。
+- `scripts/station_scene.gd` 读取 `data/story_nodes.json` 和 `data/interactables.json`。
+- `scripts/ending_screen.gd` 读取 `data/endings.json`。
+- 新剧情、调查文本、结局文本优先改 `data/*.json`；不要为了小需求建立复杂配置系统。
 
-- `doubt` / `control` / `obedience` / `anomaly` + `flags` + `choice_history`
-- `initial_world_hint`：校准选择决定公告屏提示文本
-- `last_choice_label`：上一轮选择的标签，用于公告屏残影
+## 关键状态规则
 
-## v0.2 新增状态
+- 主状态：`doubt` / `control` / `obedience` / `anomaly`。
+- `anomaly` 是叙事噪声/系统失真值，不是第四结局路线。
+- v0.2 可新增 `dominant_trait`、AI 相关字段和 `audio_enabled`，但必须在 `GameState.reset()` 中清零。
+- 不要改变现有字段含义：`doubt`、`control`、`obedience`、`anomaly`、`flags`、`choice_history`、`last_choice_label`、`initial_world_hint`、`current_node_id`。
 
-- `dominant_trait`：`"doubt"` | `"control"` | `"obedience"` | `"mixed"`
-- `ai_session_id` / `ai_guidance_used` / `ai_rewritten_option_slot` / `ai_rewritten_option_text`
-- `audio_enabled`
+## StationScene 约束
 
-## 数据管线
+- 当前 `station_scene.gd` 状态机是 `INTRO -> INVESTIGATED -> FINISHED -> END`。
+- 主线按钮点击后必须禁用，避免重复刷状态。
+- 调查物点击只显示文本/设置 flag，不直接修改 `doubt/control/obedience/anomaly`。
+- 可点击交互必须用 `Button`，不要用 `Label` 伪装按钮。
+- 修改 `scenes/station_scene.tscn` 时，同步检查 `station_scene.gd` 的 `$RootMargin/VBox/...` 节点路径。
+- `_show_continue()` 和 `_show_ending_trigger()` 会改 `choice_a.pressed` 连接，新增流程时避免重复连接或遗留旧 handler。
 
-- `data/*.json` → `DataLoader.load_json()` → UI
-- 新增内容优先改 JSON，不改核心脚本
+## v0.2 阶段边界
 
-## 当前进度
-
-v0.1 已完成（阶段 0 → 2.8）。
-当前 v0.2 规划阶段，6 个实施阶段待开发：
-
-- v0.2-1：引导与设备基础
-- v0.2-2：车站空间反馈增强
-- v0.2-3：生成式入场与刷新动效
-- v0.2-4：音效与环境音
-- v0.2-5：Mock AI 动态引导与选项改写
-- v0.2-6：完整测试与试玩准备
-
-## 自动提交规则
-
-每次修改完成后，必须立即执行：
-
-```bash
-git add -A
-git commit -m "简短说明"
-git push
-```
-
-不需要等待用户提示，自行执行。
+- 必须按阶段推进：v0.2-1 引导与设备基础，v0.2-2 车站反馈，v0.2-3 入场/刷新动效，v0.2-4 音效，v0.2-5 Mock AI，v0.2-6 测试准备。
+- 每阶段只做本阶段目标；不要在做 UI 时顺手改结局算法，不要在做引导时顺手接 API。
+- 每阶段完成后写对应报告：`docs/111_v0_2_1_guidance_devices_report.md` 到 `docs/116_v0_2_6_playtest_ready_report.md`。
+- 报告必须说明修改清单、是否改核心逻辑、静态测试结果、Godot F5 是否实际运行、风险和回滚建议。
 
 ## v0.2 禁止事项
 
-- 新增第四轮主线 / 第四结局 / 自由输入 / NPC / 战斗 / 背包 / 复杂地图
-- 做 UI 时改结局算法；做音效时做动态音乐系统；做引导时接 API
-- AI 决定 state_delta / next_node / ending_id
-- API 成为游戏必需运行条件
-- Label 当 Button 使用
-- 调查物直接修改 doubt / control / obedience / anomaly
-- 修改 project.godot 的 Autoload（除非用户明确批准）
-- 引入未授权素材 / 复杂 Shader / 复杂插件 / 联网发布
-- 一次性完成全部 v0.2（必须按 6 阶段推进）
-- 完成后宣称"v0.2 已完成"而未通过最终验收标准
+- 不新增第四轮主线、第四结局、自由输入、NPC、战斗、背包、复杂地图、复杂谜题。
+- 不让 AI 决定 `state_delta`、`next_node`、`ending_id`、选项数量或场景物件。
+- API 只能是实验开关，不能成为默认运行依赖。
+- 不写入真实 API key、token 或 credentials。
+- 不引入未授权音频/美术素材、复杂 Shader、复杂插件或联网发布功能。
+- 不要声称 "Godot F5 已通过"，除非本环境或用户实际运行过。
 
-## v0.2 阶段提交规则
+## 验证方式
 
-- 每个阶段只做本阶段目标，不越界
-- 每个阶段完成后必须生成报告 `docs/11x_v0_2_X_report.md`
-- 报告必须包含：修改文件清单、是否改动核心逻辑、如何验收、静态测试结果、Godot 实机测试结果（或说明未运行）、风险、回滚建议、下一阶段建议
-- 小范围修正（错别字/节点路径/bug/函数抽取）可在阶段内顺带做，但必须在报告中说明
+- 当前仓库没有 CI、包管理 manifest、测试 runner 或 lint/typecheck 配置。
+- 能运行 Godot 时，用 F5 验证完整路径。
+- 不能运行 Godot 时，做静态验证：JSON 可解析、节点路径匹配、三条结局路径不退化、`GameState.reset()` 清理新增字段。
+- 如果没有实机运行，最终说明中必须写明 "未运行 Godot F5"。
+
+## Git 工作流
+
+- 每次修改完成后执行 `git add -A`、`git commit -m "简短说明"`、`git push`。
+- 不要回滚用户或其他 Agent 的改动。
