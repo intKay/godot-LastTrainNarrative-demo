@@ -20,9 +20,10 @@ var text_tween: Tween
 @onready var choice_b: Button = $RootMargin/VBox/ChoiceBButton
 @onready var choice_c: Button = $RootMargin/VBox/ChoiceCButton
 @onready var choice_d: Button = $RootMargin/VBox/ChoiceDButton
-@onready var clock_btn: Button = $RootMargin/VBox/InteractHBox/ClockButton
-@onready var broadcast_light_btn: Button = $RootMargin/VBox/InteractHBox/BroadcastLightButton
-@onready var exit_gate_btn: Button = $RootMargin/VBox/InteractHBox/ExitGateButton
+@onready var objective_label: Label = $RootMargin/VBox/ObjectiveLabel
+@onready var clock_btn: Button = $RootMargin/VBox/StationHBox/ClockButton
+@onready var broadcast_light_btn: Button = $RootMargin/VBox/StationHBox/BroadcastLightButton
+@onready var exit_gate_btn: Button = $RootMargin/VBox/StationHBox/ExitGateButton
 
 
 func _ready() -> void:
@@ -36,6 +37,9 @@ func _ready() -> void:
 	clock_btn.pressed.connect(_on_clock)
 	broadcast_light_btn.pressed.connect(_on_broadcast_light)
 	exit_gate_btn.pressed.connect(_on_exit_gate)
+	_apply_button_styles()
+	_update_objective_label()
+	_update_highlight()
 
 
 func _load_data() -> void:
@@ -105,6 +109,8 @@ func _make_choice(index: int) -> void:
 		interactable_stage_id = next_round_id
 		_show_continue()
 	phase = Phase.FINISHED
+	_update_objective_label()
+	_update_highlight()
 
 
 func _show_continue() -> void:
@@ -135,6 +141,8 @@ func _on_continue() -> void:
 		btn.show()
 
 	phase = Phase.INVESTIGATED
+	_update_objective_label()
+	_update_highlight()
 
 
 func _hide_choices() -> void:
@@ -159,6 +167,8 @@ func _on_notice_board() -> void:
 		story_label.text = text
 		_show_choices()
 		phase = Phase.INVESTIGATED
+		_update_objective_label()
+		_update_highlight()
 	elif phase == Phase.INVESTIGATED:
 		story_label.text = notice_board_data.get("investigated_text", "公告屏依旧亮着。\n你已浏览过公告屏。")
 	elif phase == Phase.FINISHED:
@@ -166,6 +176,8 @@ func _on_notice_board() -> void:
 		if not has_next_round:
 			story_label.text = notice_board_data.get("three_rounds_end_text", "当前版本已记录三次主线行为。\n下一阶段将根据状态生成结局判断。")
 			phase = Phase.END
+			_update_objective_label()
+			_update_highlight()
 		else:
 			var template: String = notice_board_data.get("echo_text_template", "电子公告屏显示：23:47  末班车\n目的地：校准中\n上一行为：%s")
 			story_label.text = template % label
@@ -230,6 +242,8 @@ func _show_ending_trigger() -> void:
 		choice_a.pressed.disconnect(_on_continue)
 	if not choice_a.pressed.is_connected(_on_go_to_ending):
 		choice_a.pressed.connect(_on_go_to_ending)
+	_update_objective_label()
+	_update_highlight()
 
 
 func _on_go_to_ending() -> void:
@@ -249,3 +263,83 @@ func _on_broadcast_light() -> void:
 func _on_exit_gate() -> void:
 	story_label.text = _get_interactable_text("exit_gate")
 	GameState.flags["checked_exit_gate"] = true
+
+
+func _update_objective_label() -> void:
+	match phase:
+		Phase.INTRO:
+			objective_label.text = "系统待处理项：读取电子公告屏"
+		Phase.INVESTIGATED:
+			objective_label.text = "系统待处理项：选择一项行为"
+		Phase.FINISHED:
+			if has_next_round:
+				objective_label.text = "系统待处理项：继续记录"
+			else:
+				objective_label.text = "系统待处理项：查看最终判断"
+		Phase.END:
+			objective_label.text = "系统待处理项：记录完成"
+
+
+func _update_highlight() -> void:
+	notice_btn.modulate = Color.WHITE
+	choice_a.modulate = Color.WHITE
+	choice_b.modulate = Color.WHITE
+	choice_c.modulate = Color.WHITE
+	choice_d.modulate = Color.WHITE
+	match phase:
+		Phase.INTRO:
+			notice_btn.modulate = Color(1.0, 1.0, 0.85)
+		Phase.INVESTIGATED:
+			var c := Color(1.0, 1.0, 0.85)
+			choice_a.modulate = c
+			choice_b.modulate = c
+			choice_c.modulate = c
+			choice_d.modulate = c
+		Phase.END:
+			choice_a.modulate = Color(1.0, 1.0, 0.85)
+
+
+func _create_device_style(bg: Color, border: Color) -> StyleBoxFlat:
+	var s := StyleBoxFlat.new()
+	s.bg_color = bg
+	s.border_width_left = 1
+	s.border_width_right = 1
+	s.border_width_top = 1
+	s.border_width_bottom = 1
+	s.border_color = border
+	s.corner_radius_top_left = 2
+	s.corner_radius_top_right = 2
+	s.corner_radius_bottom_right = 2
+	s.corner_radius_bottom_left = 2
+	return s
+
+
+func _apply_button_styles() -> void:
+	var nb := _create_device_style(Color(0.12, 0.14, 0.22), Color(0.3, 0.4, 0.6))
+	notice_btn.add_theme_stylebox_override("normal", nb)
+	var nb_h := _create_device_style(Color(0.17, 0.19, 0.28), Color(0.4, 0.5, 0.7))
+	notice_btn.add_theme_stylebox_override("hover", nb_h)
+	var nb_p := _create_device_style(Color(0.08, 0.1, 0.18), Color(0.2, 0.3, 0.5))
+	notice_btn.add_theme_stylebox_override("pressed", nb_p)
+	notice_btn.add_theme_stylebox_override("disabled", nb)
+
+	var ck := _create_device_style(Color(0.08, 0.1, 0.15), Color(0.25, 0.35, 0.5))
+	clock_btn.add_theme_stylebox_override("normal", ck)
+	var ck_h := _create_device_style(Color(0.12, 0.14, 0.2), Color(0.35, 0.45, 0.6))
+	clock_btn.add_theme_stylebox_override("hover", ck_h)
+	var ck_p := _create_device_style(Color(0.05, 0.07, 0.12), Color(0.15, 0.25, 0.4))
+	clock_btn.add_theme_stylebox_override("pressed", ck_p)
+
+	var bl := _create_device_style(Color(0.08, 0.1, 0.15), Color(0.4, 0.3, 0.2))
+	broadcast_light_btn.add_theme_stylebox_override("normal", bl)
+	var bl_h := _create_device_style(Color(0.12, 0.14, 0.2), Color(0.5, 0.4, 0.3))
+	broadcast_light_btn.add_theme_stylebox_override("hover", bl_h)
+	var bl_p := _create_device_style(Color(0.05, 0.07, 0.12), Color(0.3, 0.2, 0.15))
+	broadcast_light_btn.add_theme_stylebox_override("pressed", bl_p)
+
+	var eg := _create_device_style(Color(0.08, 0.1, 0.15), Color(0.3, 0.35, 0.3))
+	exit_gate_btn.add_theme_stylebox_override("normal", eg)
+	var eg_h := _create_device_style(Color(0.12, 0.14, 0.2), Color(0.4, 0.45, 0.4))
+	exit_gate_btn.add_theme_stylebox_override("hover", eg_h)
+	var eg_p := _create_device_style(Color(0.05, 0.07, 0.12), Color(0.2, 0.25, 0.2))
+	exit_gate_btn.add_theme_stylebox_override("pressed", eg_p)

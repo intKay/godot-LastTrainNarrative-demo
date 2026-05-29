@@ -45,6 +45,16 @@ Godot 4.6 + GDScript + Control UI + JSON 数据驱动互动叙事原型。当前
 - 每阶段完成后写对应报告：`docs/111_v0_2_1_guidance_devices_report.md` 到 `docs/116_v0_2_6_playtest_ready_report.md`。
 - 报告必须说明修改清单、是否改核心逻辑、静态测试结果、Godot F5 是否实际运行、风险和回滚建议。
 
+## AI 模型优化提醒
+
+每完成一个 v0.2 阶段并生成报告后，提醒用户参考 `docs/103_ai_model_selection_guide.md` 进行多模型优化。
+
+核心原则：
+- 文本评审 → Kimi K2.6（中文最佳性价比）
+- 代码/逻辑/JSON 验证 → DeepSeek V4 Free（免费日常主力）
+- 阶段交付前全栈审核 → GPT-5.5（一阶段只用一次）
+- 不要混跑同一任务
+
 ## v0.2 禁止事项
 
 - 不新增第四轮主线、第四结局、自由输入、NPC、战斗、背包、复杂地图、复杂谜题。
