@@ -173,6 +173,7 @@ func _on_notice_board() -> void:
 		var label: String = GameState.last_choice_label
 		var template: String = notice_board_data.get("echo_text_final", "电子公告屏显示：23:47  末班车\n目的地：等待最终判断\n上一行为：%s")
 		story_label.text = template % label
+		_show_ending_trigger()
 
 
 func _disable_choices() -> void:
@@ -215,6 +216,24 @@ func _flash_story_label() -> void:
 	text_tween = create_tween()
 	text_tween.tween_property(story_label, "modulate:a", 0.65, 0.08)
 	text_tween.tween_property(story_label, "modulate:a", 1.0, 0.12)
+
+
+func _show_ending_trigger() -> void:
+	choice_a.text = "查看最终判断"
+	choice_b.hide()
+	choice_c.hide()
+	choice_d.hide()
+	choice_a.disabled = false
+	if choice_a.pressed.is_connected(_on_choice_a):
+		choice_a.pressed.disconnect(_on_choice_a)
+	if choice_a.pressed.is_connected(_on_continue):
+		choice_a.pressed.disconnect(_on_continue)
+	if not choice_a.pressed.is_connected(_on_go_to_ending):
+		choice_a.pressed.connect(_on_go_to_ending)
+
+
+func _on_go_to_ending() -> void:
+	get_tree().change_scene_to_file("res://scenes/ending_screen.tscn")
 
 
 func _on_clock() -> void:

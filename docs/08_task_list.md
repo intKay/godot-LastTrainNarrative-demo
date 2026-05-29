@@ -73,13 +73,13 @@
 2. `scripts/calibration_screen.gd` 重写为多问循环（逐问显示→选择→delta→下一问→完成切场景）
 3. `state_delta`/`set_flags` 实际生效，校准首次对状态系统产生影响
 
+### 阶段 2.7：三个低保真结局 ✅
+
+1. `data/endings.json` 含顺从/怀疑/控制三结局文本
+2. `scripts/ending_screen.gd` 按状态值最高维度判断结局
+3. `station_scene.gd` 第三轮后触发"查看最终判断"→ ending_screen，`game_state.gd` 新增 `reset()`
+
 ## 待完成
-
-### 阶段 2.7：三个低保真结局 📋
-
-1. 创建 `endings.json`
-2. 创建结局判断逻辑（按状态值最高维度触发）
-3. 顺从结局 / 怀疑结局 / 控制结局文本
 
 ### 阶段 2.8：低保真 UI / 文本打磨 📋
 
