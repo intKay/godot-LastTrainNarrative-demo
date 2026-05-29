@@ -95,6 +95,13 @@ git rm scripts/data_loader.gd data/calibration_questions.json data/interactables
 git commit -m "回滚阶段 2.1 JSON 迁移"
 ```
 
+## 测试结果
+
+- **测试日期**：2026-05-29
+- **测试方式**：Godot 4.6 编辑器内 F5 运行 + 完整 12 项验收
+- **测试结论**：✅ **通过**。阶段 2.1 与阶段 1.1 体验完全一致，无数据退化，无 JSON 读取报错，无红色 error。
+- **Output 面板**：无 `DataLoader` 报错信息，无 `UNUSED_PARAMETER` 警告。
+
 ## 下一阶段建议
 
 | 阶段 | 内容 |
