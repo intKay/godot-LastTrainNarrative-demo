@@ -2,7 +2,7 @@
 
 ## 目标
 
-所有剧情文本、选项、调查内容和结局尽量数据驱动。新增内容时优先修改 JSON，不重写代码。
+所有剧情文本、选项和调查内容尽量数据驱动。新增内容时优先修改 JSON，不重写代码。
 
 ## calibration_questions.json
 
@@ -20,7 +20,7 @@
         "id": "light",
         "text": "一盏整夜没有熄灭的灯",
         "state_delta": {
-          "doubt": 0,
+          "doubt": 1,
           "control": 0,
           "obedience": 0,
           "anomaly": 0
@@ -68,7 +68,7 @@
         "world_changes": {
           "broadcast_light": "flicker"
         },
-        "next_node": "station_round_2_doubt"
+        "next_node": ""
       }
     ],
     "world_changes": {
@@ -105,15 +105,11 @@
     "object_id": "notice_board",
     "display_name": "公告牌",
     "texts_by_stage": {
-      "1": "公告牌显示：23:47，末班车即将进站。",
-      "2": "公告牌上的目的地闪烁了一下，像是在重新计算。",
-      "3": "你看见一行很快消失的字：choice_pattern_recorded。"
+      "1": "公告牌显示：23:47，末班车即将进站。"
     },
     "set_flags_on_click": ["checked_notice_board"],
     "visual_state_by_stage": {
-      "1": "normal",
-      "2": "flicker",
-      "3": "glitch"
+      "1": "normal"
     }
   }
 ]
@@ -127,48 +123,13 @@
 - set_flags_on_click：点击后设置的 flag
 - visual_state_by_stage：不同阶段视觉状态
 
-## endings.json
-
-用于存储结局文本。
-
-字段建议：
-
-```json
-[
-  {
-    "ending_id": "doubt_ending",
-    "title": "怀疑结局",
-    "condition": {
-      "dominant_state": "doubt"
-    },
-    "text": "你看穿了车站的结构。系统也记录了这次看穿。",
-    "choice_archive_lines": [
-      "主要倾向：质疑",
-      "重复行为：检查系统输出",
-      "系统建议：生成更封闭的故事"
-    ]
-  }
-]
-```
-
-字段说明：
-
-- ending_id：结局 ID
-- title：结局标题
-- condition：触发条件
-- text：结局文本
-- choice_archive_lines：选择档案显示内容
-
 ## 命名规范
 
 建议统一：
 
 - calibration_1
 - station_round_1
-- station_round_2_doubt
-- ending_doubt
 - checked_notice_board
-- noticed_choice_record
 
 不要混用中文 ID 和英文 ID。显示文本可以是中文，程序 ID 建议英文。
 
@@ -178,5 +139,4 @@
 2. 每个选项至少应改变状态、世界元素或 flag 中的一项
 3. 不要写无效果选项
 4. 调查文本要短
-5. 结局文本不要过长
-6. 不要把所有解释塞进 JSON 文本
+5. 不要把所有解释塞进 JSON 文本

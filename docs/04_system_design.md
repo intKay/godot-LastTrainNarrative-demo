@@ -60,7 +60,7 @@ v0.1 暂时不加入 rescue / empathy，因为背包和沉默乘客支线已删�
       "world_changes": {
         "broadcast_light": "flicker"
       },
-      "next_node": "station_round_2_doubt"
+      "next_node": ""
     }
   ],
   "world_changes": {
@@ -82,17 +82,11 @@ v0.1 暂时不加入 rescue / empathy，因为背包和沉默乘客支线已删�
   "object_id": "notice_board",
   "display_name": "公告牌",
   "texts_by_stage": {
-    "1": "公告牌显示：23:47，末班车即将进站。",
-    "2": "公告牌上的目的地闪烁了一下，像是在重新计算。",
-    "3": "你看见一行很快消失的字：choice_pattern_recorded。",
-    "4": "公告牌显示：该测试者倾向于质疑叙事边界。"
+    "1": "公告牌显示：23:47，末班车即将进站。"
   },
   "set_flags_on_click": ["checked_notice_board"],
   "visual_state_by_stage": {
-    "1": "normal",
-    "2": "flicker",
-    "3": "glitch",
-    "4": "debug"
+    "1": "normal"
   }
 }
 ```
@@ -105,9 +99,9 @@ v0.1 中，点击交互物主要不直接改变 doubt/control/obedience 等主�
 
 1. 显示调查文本
 2. 设置 flag
-3. 解锁后续选项或影响结局文本
+3. 为后续选项提供条件
 
-这样避免玩家反复点击刷状态，也避免结局判断过度复杂。
+这样避免玩家反复点击刷状态。
 
 ## World State
 
@@ -150,32 +144,6 @@ clock_state:
 - invalid
 ```
 
-## Ending 判断
-
-结局由三类信息共同决定：
-
-1. 最高状态值
-2. 关键调查 flags
-3. 最后一轮选择
-
-示例：
-
-```gdscript
-if doubt >= control and doubt >= obedience:
-    ending = "doubt_ending"
-elif control >= doubt and control >= obedience:
-    ending = "control_ending"
-else:
-    ending = "obedience_ending"
-```
-
-后续可加入 flag 修正：
-
-```gdscript
-if flags.get("noticed_choice_record", false) and doubt >= 2:
-    ending_variant = "doubt_clear"
-```
-
 ## MockAIManager 职责
 
 MockAIManager 不是真 AI，而是预制文本读取器。
@@ -200,12 +168,11 @@ MockAIManager 不是真 AI，而是预制文本读取器。
 真实 AI 不应决定：
 
 1. 主线结构
-2. 结局类型
-3. 核心状态规则
-4. 世界观边界
+2. 核心状态规则
+3. 世界观边界
 
 ## 数据驱动原则
 
-新增剧情节点、交互物、结局时，优先修改 JSON 数据，不重写核心逻辑。
+新增剧情节点、交互物时，优先修改 JSON 数据，不重写核心逻辑。
 
 v0.1 的代码目标是稳定跑通，不追求复杂架构。

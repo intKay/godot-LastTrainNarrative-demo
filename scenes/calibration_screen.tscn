@@ -1,0 +1,67 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/calibration_screen.gd" id="1"]
+
+[node name="CalibrationScreen" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1")
+
+[node name="Background" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.063, 0.078, 0.125, 1)
+mouse_filter = 2
+
+[node name="RootMargin" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 40
+theme_override_constants/margin_top = 40
+theme_override_constants/margin_right = 40
+theme_override_constants/margin_bottom = 40
+
+[node name="VBox" type="VBoxContainer" parent="RootMargin"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="TitleLabel" type="Label" parent="RootMargin/VBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "叙事校准程序"
+horizontal_alignment = 1
+
+[node name="Line" type="HSeparator" parent="RootMargin/VBox"]
+layout_mode = 2
+
+[node name="InstructionLabel" type="Label" parent="RootMargin/VBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 14
+text = "请根据直觉完成以下选择。\n系统将根据你的回答生成一段短篇体验。"
+autowrap_mode = 3
+
+[node name="QuestionLabel" type="Label" parent="RootMargin/VBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 18
+text = "请选择故事的第一个锚点："
+
+[node name="ButtonsVBox" type="VBoxContainer" parent="RootMargin/VBox"]
+layout_mode = 2
+
+[node name="StatusLabel" type="Label" parent="RootMargin/VBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+text = ""
+autowrap_mode = 3

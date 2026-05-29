@@ -1,0 +1,100 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/station_scene.gd" id="1"]
+
+[node name="StationScene" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1")
+
+[node name="Background" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.063, 0.078, 0.125, 1)
+mouse_filter = 2
+
+[node name="RootMargin" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 40
+theme_override_constants/margin_top = 40
+theme_override_constants/margin_right = 40
+theme_override_constants/margin_bottom = 40
+
+[node name="VBox" type="VBoxContainer" parent="RootMargin"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="TopBar" type="HBoxContainer" parent="RootMargin/VBox"]
+layout_mode = 2
+
+[node name="SystemNameLabel" type="Label" parent="RootMargin/VBox/TopBar"]
+layout_mode = 2
+text = "叙事校准程序"
+theme_override_font_sizes/font_size = 14
+
+[node name="TimeLabel" type="Label" parent="RootMargin/VBox/TopBar"]
+layout_mode = 2
+text = "23:47"
+theme_override_font_sizes/font_size = 14
+size_flags_horizontal = 2
+
+[node name="Line" type="HSeparator" parent="RootMargin/VBox"]
+layout_mode = 2
+
+[node name="StationHBox" type="HBoxContainer" parent="RootMargin/VBox"]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 40)
+
+[node name="NoticeBoardButton" type="Button" parent="RootMargin/VBox/StationHBox"]
+layout_mode = 2
+text = "电子公告屏"
+
+[node name="BroadcastLight" type="ColorRect" parent="RootMargin/VBox/StationHBox"]
+layout_mode = 2
+custom_minimum_size = Vector2(24, 24)
+color = Color(0.3, 0.3, 0.3, 1)
+
+[node name="BroadcastLabel" type="Label" parent="RootMargin/VBox/StationHBox"]
+layout_mode = 2
+text = "广播"
+theme_override_font_sizes/font_size = 12
+
+[node name="StoryLabel" type="Label" parent="RootMargin/VBox"]
+custom_minimum_size = Vector2(0, 160)
+layout_mode = 2
+text = "你站在一座空车站里。\n公告屏仍在刷新。\n广播灯亮着，没有声音。\n时钟停在 23:47。"
+autowrap_mode = 3
+size_flags_vertical = 3
+
+[node name="ChoiceAButton" type="Button" parent="RootMargin/VBox"]
+layout_mode = 2
+text = "A. 询问广播这里是哪一站"
+visible = false
+
+[node name="ChoiceBButton" type="Button" parent="RootMargin/VBox"]
+layout_mode = 2
+text = "B. 查看出口是否能打开"
+visible = false
+
+[node name="ChoiceCButton" type="Button" parent="RootMargin/VBox"]
+layout_mode = 2
+text = "C. 继续等待末班车"
+visible = false
+
+[node name="ChoiceDButton" type="Button" parent="RootMargin/VBox"]
+layout_mode = 2
+text = "D. 保持沉默，观察公告屏"
+visible = false

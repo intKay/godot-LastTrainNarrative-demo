@@ -1,0 +1,74 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/main_test.gd" id="1"]
+
+[node name="MainTest" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1")
+
+[node name="Background" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.063, 0.078, 0.125, 1)
+mouse_filter = 2
+
+[node name="RootMargin" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 40
+theme_override_constants/margin_top = 40
+theme_override_constants/margin_right = 40
+theme_override_constants/margin_bottom = 40
+
+[node name="VBox" type="VBoxContainer" parent="RootMargin"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="TitleLabel" type="Label" parent="RootMargin/VBox"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "叙事校准程序"
+horizontal_alignment = 1
+
+[node name="Line" type="HSeparator" parent="RootMargin/VBox"]
+layout_mode = 2
+
+[node name="StoryLabel" type="Label" parent="RootMargin/VBox"]
+custom_minimum_size = Vector2(0, 160)
+layout_mode = 2
+text = "请选择故事的第一个锚点。"
+autowrap_mode = 3
+size_flags_vertical = 3
+
+[node name="OptionAButton" type="Button" parent="RootMargin/VBox"]
+layout_mode = 2
+text = "A. 一盏整夜没有熄灭的灯"
+
+[node name="OptionBButton" type="Button" parent="RootMargin/VBox"]
+layout_mode = 2
+text = "B. 一扇始终没有打开的门"
+
+[node name="OptionCButton" type="Button" parent="RootMargin/VBox"]
+layout_mode = 2
+text = "C. 一段无人回应的广播"
+
+[node name="OptionDButton" type="Button" parent="RootMargin/VBox"]
+layout_mode = 2
+text = "D. 一张写错日期的车票"
+
+[node name="NoticeBoardButton" type="Button" parent="RootMargin/VBox"]
+layout_mode = 2
+text = "调查公告牌"

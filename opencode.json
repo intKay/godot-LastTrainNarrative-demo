@@ -1,14 +1,36 @@
 {
   "$schema": "https://opencode.ai/config.json",
-  "default_agent": "plan",
   "instructions": [
     "AGENTS.md",
     "docs/*.md"
   ],
   "permission": {
-    "skill": {
-      "*": "allow"
-    }
+    "read": "allow",
+    "glob": "allow",
+    "grep": "allow",
+    "list": "allow",
+    "edit": "ask",
+    "bash": "ask",
+    "external_directory": "deny",
+    "webfetch": "ask",
+    "websearch": "ask",
+    "skill": "allow"
   },
-  "share": "manual"
+  "mcp": {},
+  "watcher": {
+    "ignore": [
+      ".git/**",
+      ".godot/**",
+      "imported/**",
+      "export/**",
+      "build/**",
+      "dist/**",
+      "node_modules/**"
+    ]
+  },
+  "compaction": {
+    "auto": true,
+    "prune": true,
+    "reserved": 10000
+  }
 }
