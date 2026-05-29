@@ -150,12 +150,16 @@ func _on_notice_board() -> void:
 		story_label.text = notice_board_data.get("investigated_text", "公告屏依旧亮着。\n你已浏览过公告屏。")
 	elif phase == Phase.FINISHED:
 		var label: String = GameState.last_choice_label
-		var template: String = notice_board_data.get("echo_text_template", "电子公告屏显示：23:47  末班车\n目的地：校准中\n上一行为：%s")
-		story_label.text = template % label
 		if not has_next_round:
+			story_label.text = notice_board_data.get("three_rounds_end_text", "当前版本已记录三次主线行为。\n下一阶段将根据状态生成结局判断。")
 			phase = Phase.END
+		else:
+			var template: String = notice_board_data.get("echo_text_template", "电子公告屏显示：23:47  末班车\n目的地：校准中\n上一行为：%s")
+			story_label.text = template % label
 	elif phase == Phase.END:
-		story_label.text = notice_board_data.get("slice_end_text", "切片扩展结束。\n当前版本已记录两次主线行为。")
+		var label: String = GameState.last_choice_label
+		var template: String = notice_board_data.get("echo_text_final", "电子公告屏显示：23:47  末班车\n目的地：等待最终判断\n上一行为：%s")
+		story_label.text = template % label
 
 
 func _disable_choices() -> void:

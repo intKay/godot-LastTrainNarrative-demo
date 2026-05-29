@@ -44,21 +44,19 @@
 5. `calibration_screen.gd` 改为 JSON 读取
 6. `station_scene.gd` 改为 JSON 读取
 
-## 进行中
+### 阶段 2.2：扩展第二轮车站选择 ✅
 
-### 阶段 2.2：扩展第二轮车站选择 🔄
+1. `story_nodes.json` 新增 `station_round_2` 节点
+2. `station_scene.gd` 状态机升级为 4 阶段 + 继续按钮
+3. Bug 修复：第二轮 B/C/D 按钮循环恢复
 
-- 第一轮→第二轮"继续"按钮功能已完成
-- 第二轮选项数据已写入 JSON
-- Bug 待修复：第二轮 B/C/D 文字不更新、不可见
-- UX 待改进：信息过度依赖公告屏，缺少提示
+### 阶段 2.3：第三轮车站选择 ✅
+
+1. `story_nodes.json` 新增 `station_round_3` 节点 + round_2 转向 round_3
+2. `station_scene.gd` `_on_notice_board` 适配最后一轮结束语/残影
+3. `interactables.json` 新增 `three_rounds_end_text` / `echo_text_final`
 
 ## 待完成
-
-### 阶段 2.3：第三轮车站选择 📋
-
-1. `story_nodes.json` 新增 `station_round_3`
-2. `station_scene.gd` 支持第三轮
 
 ### 阶段 2.4：四个调查物完整化 📋
 

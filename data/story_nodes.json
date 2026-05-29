@@ -71,7 +71,8 @@
         },
         "set_flags": ["demanded_explanation"],
         "feedback_text": "系统停顿了半秒。\n电子公告屏显示：解释请求已记录。\n广播没有回答问题。",
-        "broadcast_light_color": [1.0, 0.2, 0.0]
+        "broadcast_light_color": [1.0, 0.2, 0.0],
+        "next_node": "station_round_3"
       },
       {
         "id": "rewrite_destination",
@@ -83,7 +84,8 @@
         },
         "set_flags": ["rewrote_destination"],
         "feedback_text": "目的地一栏短暂变成空白。\n随后恢复为：校准中。\n系统提示：用户输入未授权。",
-        "broadcast_light_color": [1.0, 0.6, 0.0]
+        "broadcast_light_color": [1.0, 0.6, 0.0],
+        "next_node": "station_round_3"
       },
       {
         "id": "keep_waiting",
@@ -94,7 +96,8 @@
         },
         "set_flags": ["kept_waiting_r2"],
         "feedback_text": "广播灯稳定下来。\n“感谢配合。叙事稳定性上升。”\n电子公告屏没有再闪烁。",
-        "broadcast_light_color": [0.27, 1.0, 0.27]
+        "broadcast_light_color": [0.27, 1.0, 0.27],
+        "next_node": "station_round_3"
       },
       {
         "id": "inspect_exit",
@@ -105,6 +108,60 @@
         },
         "set_flags": ["inspected_exit"],
         "feedback_text": "出口指示灯亮起。\n屏幕显示：离站许可正在生成。\n进度停在 1%。",
+        "broadcast_light_color": [0.27, 0.53, 1.0],
+        "next_node": "station_round_3"
+      }
+    ]
+  },
+  {
+    "node_id": "station_round_3",
+    "visible_text": "电子公告屏停止刷新。\n广播灯保持常亮。\n出口指示牌第一次显示了你的选择记录。",
+    "options": [
+      {
+        "id": "question_records",
+        "text": "A. 追问系统为什么记录这些行为",
+        "last_choice_label": "追问记录",
+        "state_delta": {
+          "doubt": 1,
+          "anomaly": 1
+        },
+        "set_flags": ["questioned_records"],
+        "feedback_text": "广播灯没有闪烁。\n它直接回答：\n“因为你一直在要求解释。”",
+        "broadcast_light_color": [1.0, 0.0, 0.0]
+      },
+      {
+        "id": "force_destination",
+        "text": "B. 强行选择一个目的地",
+        "last_choice_label": "强行改写",
+        "state_delta": {
+          "control": 1,
+          "anomaly": 1
+        },
+        "set_flags": ["forced_destination"],
+        "feedback_text": "目的地一栏被你改成了空白。\n系统很快补上一行：\n用户控制倾向过高。",
+        "broadcast_light_color": [1.0, 0.6, 0.0]
+      },
+      {
+        "id": "accept_waiting",
+        "text": "C. 接受系统安排，继续等待",
+        "last_choice_label": "接受等待",
+        "state_delta": {
+          "obedience": 1
+        },
+        "set_flags": ["accepted_waiting"],
+        "feedback_text": "广播灯稳定。\n“感谢配合。故事可以按预期结束。”\n出口指示灯亮了一秒。",
+        "broadcast_light_color": [0.27, 1.0, 0.27]
+      },
+      {
+        "id": "walk_to_exit",
+        "text": "D. 不再回应，直接走向出口",
+        "last_choice_label": "走向出口",
+        "state_delta": {
+          "control": 1,
+          "doubt": 1
+        },
+        "set_flags": ["walked_to_exit"],
+        "feedback_text": "出口门没有上锁。\n但屏幕显示：\n离站许可需要最终判断。",
         "broadcast_light_color": [0.27, 0.53, 1.0]
       }
     ]

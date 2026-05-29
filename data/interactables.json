@@ -10,7 +10,9 @@
     },
     "investigated_text": "公告屏依旧亮着。\n你已浏览过公告屏。",
     "echo_text_template": "电子公告屏显示：23:47  末班车\n目的地：校准中\n上一行为：%s",
+    "echo_text_final": "电子公告屏显示：23:47  末班车\n目的地：等待最终判断\n上一行为：%s",
     "slice_end_text": "切片扩展结束。\n当前版本已记录两次主线行为。",
+    "three_rounds_end_text": "当前版本已记录三次主线行为。\n下一阶段将根据状态生成结局判断。",
     "set_flags_on_click": ["checked_notice_board"]
   }
 ]
