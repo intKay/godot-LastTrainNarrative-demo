@@ -1,0 +1,14 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "default_agent": "plan",
+  "instructions": [
+    "AGENTS.md",
+    "docs/*.md"
+  ],
+  "permission": {
+    "skill": {
+      "*": "allow"
+    }
+  },
+  "share": "manual"
+}
