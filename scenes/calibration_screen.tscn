@@ -48,7 +48,7 @@ layout_mode = 2
 
 [node name="InstructionLabel" type="Label" parent="RootMargin/VBox"]
 layout_mode = 2
-theme_override_font_sizes/font_size = 14
+theme_override_font_sizes/font_size = 16
 text = "请根据直觉完成以下选择。\n系统将根据你的回答生成一段短篇体验。"
 autowrap_mode = 3
 
