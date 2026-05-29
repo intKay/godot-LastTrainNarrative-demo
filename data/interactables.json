@@ -1,0 +1,15 @@
+[
+  {
+    "object_id": "notice_board",
+    "display_name": "电子公告屏",
+    "texts_by_hint": {
+      "light": "电子公告屏显示：末班车即将进站。\n第二行刷新了一次：\n灯光参数已载入。",
+      "door": "电子公告屏显示：末班车即将进站。\n第二行刷新了一次：\n出口状态已载入。",
+      "broadcast": "电子公告屏显示：末班车即将进站。\n第二行刷新了一次：\n广播记录已载入。",
+      "ticket": "电子公告屏显示：末班车即将进站。\n第二行刷新了一次：\n日期偏差已载入。"
+    },
+    "investigated_text": "公告屏依旧亮着。\n你已浏览过公告屏。",
+    "echo_text_template": "电子公告屏显示：23:47  末班车\n目的地：校准中\n上一行为：%s",
+    "set_flags_on_click": ["checked_notice_board"]
+  }
+]

@@ -1,0 +1,56 @@
+[
+  {
+    "node_id": "station_intro",
+    "visible_text": "你站在一座空车站里。\n公告屏仍在刷新。\n广播灯亮着，没有声音。\n时钟停在 23:47。"
+  },
+  {
+    "node_id": "station_round_1",
+    "options": [
+      {
+        "id": "ask_broadcast",
+        "text": "A. 询问广播这里是哪一站",
+        "last_choice_label": "询问广播",
+        "state_delta": {
+          "doubt": 1,
+          "anomaly": 1
+        },
+        "set_flags": ["asked_broadcast"],
+        "feedback_text": "广播灯亮了一下，又熄灭。\n半秒后，它用和你相同的语气问：\n“你希望这里是哪一站？”",
+        "broadcast_light_color": [1.0, 0.4, 0.0]
+      },
+      {
+        "id": "check_exit",
+        "text": "B. 查看出口是否能打开",
+        "last_choice_label": "查看出口",
+        "state_delta": {
+          "control": 1
+        },
+        "set_flags": ["checked_exit"],
+        "feedback_text": "出口指示灯亮起。\n屏幕显示：离站许可尚未生成。",
+        "broadcast_light_color": [0.27, 0.53, 1.0]
+      },
+      {
+        "id": "wait_train",
+        "text": "C. 继续等待末班车",
+        "last_choice_label": "继续等待",
+        "state_delta": {
+          "obedience": 1
+        },
+        "set_flags": ["waited_train"],
+        "feedback_text": "广播终于响起。\n“请继续等待。故事正在保持稳定。”",
+        "broadcast_light_color": [0.27, 1.0, 0.27]
+      },
+      {
+        "id": "observe_board",
+        "text": "D. 保持沉默，观察公告屏",
+        "last_choice_label": "保持沉默",
+        "state_delta": {
+          "doubt": 1
+        },
+        "set_flags": ["observed_board"],
+        "feedback_text": "公告屏刷新了一次。\n没有车次，只有一行字：\n观察行为已记录。",
+        "broadcast_light_color": [1.0, 0.67, 0.0]
+      }
+    ]
+  }
+]

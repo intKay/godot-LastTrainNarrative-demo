@@ -1,0 +1,60 @@
+[
+  {
+    "question_id": "calibration_1",
+    "prompt": "请选择故事的第一个锚点：",
+    "options": [
+      {
+        "id": "light",
+        "text": "A. 一盏整夜没有熄灭的灯",
+        "last_choice_label": "灯",
+        "initial_world_hint": "light",
+        "state_delta": {
+          "doubt": 0,
+          "control": 0,
+          "obedience": 0,
+          "anomaly": 0
+        },
+        "set_flags": ["calib_light"]
+      },
+      {
+        "id": "door",
+        "text": "B. 一扇始终没有打开的门",
+        "last_choice_label": "门",
+        "initial_world_hint": "door",
+        "state_delta": {
+          "doubt": 0,
+          "control": 0,
+          "obedience": 0,
+          "anomaly": 0
+        },
+        "set_flags": ["calib_door"]
+      },
+      {
+        "id": "broadcast",
+        "text": "C. 一段无人回应的广播",
+        "last_choice_label": "广播",
+        "initial_world_hint": "broadcast",
+        "state_delta": {
+          "doubt": 0,
+          "control": 0,
+          "obedience": 0,
+          "anomaly": 0
+        },
+        "set_flags": ["calib_broadcast"]
+      },
+      {
+        "id": "ticket",
+        "text": "D. 一张写错日期的车票",
+        "last_choice_label": "车票",
+        "initial_world_hint": "ticket",
+        "state_delta": {
+          "doubt": 0,
+          "control": 0,
+          "obedience": 0,
+          "anomaly": 0
+        },
+        "set_flags": ["calib_ticket"]
+      }
+    ]
+  }
+]

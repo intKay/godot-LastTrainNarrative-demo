@@ -6,25 +6,29 @@ extends Control
 @onready var buttons_vbox: VBoxContainer = $RootMargin/VBox/ButtonsVBox
 @onready var status_label: Label = $RootMargin/VBox/StatusLabel
 
-var options_data: Array = [
-	{"hint": "light", "label": "灯", "text": "A. 一盏整夜没有熄灭的灯"},
-	{"hint": "door", "label": "门", "text": "B. 一扇始终没有打开的门"},
-	{"hint": "broadcast", "label": "广播", "text": "C. 一段无人回应的广播"},
-	{"hint": "ticket", "label": "车票", "text": "D. 一张写错日期的车票"},
-]
+var options_data: Array = []
 
 
 func _ready() -> void:
 	status_label.hide()
+	_load_data()
 	_create_buttons()
+
+
+func _load_data() -> void:
+	var data = DataLoader.load_json("res://data/calibration_questions.json")
+	if data and data.size() > 0:
+		var q = data[0]
+		question_label.text = q.prompt
+		options_data = q.options
 
 
 func _create_buttons() -> void:
 	for opt in options_data:
 		var btn := Button.new()
 		btn.text = opt.text
-		var hint: String = opt.hint
-		var label: String = opt.label
+		var hint: String = opt.initial_world_hint
+		var label: String = opt.last_choice_label
 		btn.pressed.connect(_on_option_selected.bind(hint, label, btn))
 		buttons_vbox.add_child(btn)
 
