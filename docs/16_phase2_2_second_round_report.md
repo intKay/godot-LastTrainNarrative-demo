@@ -154,3 +154,55 @@ git restore data/story_nodes.json data/interactables.json scripts/station_scene.
 | 2.3 | 加入时钟/出口门等新交互物的 JSON 配置 |
 | 2.4 | 扩展校准至完整三问 |
 | 2.5 | 结局系统原型 |
+
+---
+
+## 阶段 2.2.1 Bug 修复记录
+
+### 修复了什么
+
+第二轮进入时 B/C/D 按钮不可见、文字不正确、实际处于禁用状态，导致第二轮 B/C/D 无法测试。
+
+### 根因
+
+`_on_continue()` 只更新了 `choice_a.text` 并调用 `_show_choices()`，但：
+1. `_load_round_data()` 中的 `_hide_choices()` 隐藏了全部 4 个按钮
+2. 第一轮 `_make_choice()` 中的 `_disable_choices()` 使 B/C/D 保持 `disabled = true`
+3. `_show_choices()` 仅恢复 `visible`，未恢复 `disabled` 和 B/C/D 的 `text`
+
+### 修改文件
+
+| 文件 | 操作 | 说明 |
+|------|------|------|
+| `scripts/station_scene.gd` | 修改 | `_on_continue()` 中 4 行替换为循环，统一恢复 4 个按钮的 text / disabled / visible |
+
+### 具体代码变化
+
+改前：
+```gdscript
+choice_a.text = round_options[0].text if round_options.size() > 0 else ""
+_show_choices()
+```
+
+改后：
+```gdscript
+for i in range(round_options.size()):
+    var btn: Button = [choice_a, choice_b, choice_c, choice_d][i]
+    btn.text = round_options[i].text
+    btn.disabled = false
+    btn.show()
+```
+
+### 验收结果
+
+| # | 操作 | 预期 | 结果 |
+|---|------|------|------|
+| 1 | F5 启动 → 校准 → 车站 | 阶段 2.1 回归正常 | ⬜ |
+| 2 | 第一轮→继续→第二轮 A/B/C/D 全部可见、文字正确 | 4 个按钮状态完全恢复 | ⬜ |
+| 3 | 第二轮 A/B/C/D 分别点击 | 各自反馈/变色/禁用 | ⬜ |
+| 4 | 第二轮后公告屏残影 + 结尾文本 | 显示正确 | ⬜ |
+| 5 | Output 面板 | 无红色 error | ⬜ |
+
+### 遗留问题
+
+- UX 提示不足（很多信息需点公告屏）— 仍为 🟡 待后续优化

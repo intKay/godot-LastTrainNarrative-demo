@@ -114,8 +114,13 @@ func _on_continue() -> void:
 
 	var target_id: String = next_round_id if next_round_id != "" else "station_round_2"
 	_load_round_data(target_id)
-	choice_a.text = round_options[0].text if round_options.size() > 0 else ""
-	_show_choices()
+
+	for i in range(round_options.size()):
+		var btn: Button = [choice_a, choice_b, choice_c, choice_d][i]
+		btn.text = round_options[i].text
+		btn.disabled = false
+		btn.show()
+
 	phase = Phase.INVESTIGATED
 
 
