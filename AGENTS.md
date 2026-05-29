@@ -1,6 +1,12 @@
 # 叙事校准程序 / 末班车站
 
-Godot 4.6 + GDScript + Control UI + JSON 数据驱动互动叙事原型。v0.1 完整低保真可试玩原型（3～5 分钟）。
+Godot 4.6 + GDScript + Control UI + JSON 数据驱动互动叙事原型。v0.2 增强版原型（5～8 分钟可外部试玩）。
+
+> **v0.2 开发前必须首先阅读：**
+> - `docs/101_v0_2_requirement_spec.md`（需求规格）
+> - `docs/102_v0_2_opencode_execution_constraints.md`（执行约束）
+> - 本文档范围约束优先级低于 docs/102
+> - 遇到矛盾时以 docs/102 为准
 
 ## 项目结构
 
@@ -38,6 +44,12 @@ Godot 4.6 + GDScript + Control UI + JSON 数据驱动互动叙事原型。v0.1 �
 - `initial_world_hint`：校准选择决定公告屏提示文本
 - `last_choice_label`：上一轮选择的标签，用于公告屏残影
 
+## v0.2 新增状态
+
+- `dominant_trait`：`"doubt"` | `"control"` | `"obedience"` | `"mixed"`
+- `ai_session_id` / `ai_guidance_used` / `ai_rewritten_option_slot` / `ai_rewritten_option_text`
+- `audio_enabled`
+
 ## 数据管线
 
 - `data/*.json` → `DataLoader.load_json()` → UI
@@ -45,7 +57,15 @@ Godot 4.6 + GDScript + Control UI + JSON 数据驱动互动叙事原型。v0.1 �
 
 ## 当前进度
 
-阶段 2.8（含内部验收）已完成。所有 JSON 结构已验证、三条结局路径经 Python 模拟确认正确、代码静态检查无阻塞问题。下一阶段为 Godot F5 实机验收与 v0.1 完成报告（2.9）。
+v0.1 已完成（阶段 0 → 2.8）。
+当前 v0.2 规划阶段，6 个实施阶段待开发：
+
+- v0.2-1：引导与设备基础
+- v0.2-2：车站空间反馈增强
+- v0.2-3：生成式入场与刷新动效
+- v0.2-4：音效与环境音
+- v0.2-5：Mock AI 动态引导与选项改写
+- v0.2-6：完整测试与试玩准备
 
 ## 自动提交规则
 
@@ -59,3 +79,22 @@ git push
 
 不需要等待用户提示，自行执行。
 
+## v0.2 禁止事项
+
+- 新增第四轮主线 / 第四结局 / 自由输入 / NPC / 战斗 / 背包 / 复杂地图
+- 做 UI 时改结局算法；做音效时做动态音乐系统；做引导时接 API
+- AI 决定 state_delta / next_node / ending_id
+- API 成为游戏必需运行条件
+- Label 当 Button 使用
+- 调查物直接修改 doubt / control / obedience / anomaly
+- 修改 project.godot 的 Autoload（除非用户明确批准）
+- 引入未授权素材 / 复杂 Shader / 复杂插件 / 联网发布
+- 一次性完成全部 v0.2（必须按 6 阶段推进）
+- 完成后宣称"v0.2 已完成"而未通过最终验收标准
+
+## v0.2 阶段提交规则
+
+- 每个阶段只做本阶段目标，不越界
+- 每个阶段完成后必须生成报告 `docs/11x_v0_2_X_report.md`
+- 报告必须包含：修改文件清单、是否改动核心逻辑、如何验收、静态测试结果、Godot 实机测试结果（或说明未运行）、风险、回滚建议、下一阶段建议
+- 小范围修正（错别字/节点路径/bug/函数抽取）可在阶段内顺带做，但必须在报告中说明

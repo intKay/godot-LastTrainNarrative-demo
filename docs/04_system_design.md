@@ -1,4 +1,4 @@
-# 《叙事校准程序 / 末班车站》v0.1 系统设计
+# 《叙事校准程序 / 末班车站》v0.1 / v0.2 系统设计
 
 ## 系统总览
 
@@ -8,13 +8,19 @@ v0.1 的系统本质是：
 JSON 数据 → UI 显示 → 玩家点击 → 更新 GameState → 更新世界状态 → 进入下一节点
 ```
 
+v0.2 的系统本质是：
+
+```text
+JSON 数据 + Mock AI → UI 显示 + 设备视觉化 + 音效 → 玩家点击 → 更新 GameState → dominant_trait 计算 → 车站空间反馈 → 进入下一节点
+```
+
 不需要复杂 AI，不需要物理系统，不需要角色控制器。
 
 ## GameState
 
 GameState 负责记录当前游玩状态。
 
-建议字段：
+### v0.1 核心字段（不可变）
 
 ```gdscript
 var current_stage: int = 0
@@ -33,14 +39,36 @@ var player_name: String = ""
 - doubt：怀疑值
 - control：控制值
 - obedience：顺从值
-- anomaly：异常值
+- anomaly：异常值（叙事噪声/系统失真值，不决定结局类型）
 - flags：调查记录和触发标记
 - choice_history：玩家选择历史
 - player_name：后续可选，用于小型 meta 点
 
-v0.1 暂时不加入 rescue / empathy，因为背包和沉默乘客支线已删除。
+### v0.2 新增字段
 
-> v0.1 完整原型：GameState 当前已实现，后续不再移除字段，只增量添加（如结局触发表）。
+```gdscript
+var dominant_trait: String = ""          # "doubt" | "control" | "obedience" | "mixed"
+var ai_session_id: String = ""           # AI 会话 ID，重开时刷新
+var ai_guidance_used: bool = false       # 本局是否已触发 AI 引导
+var ai_rewritten_option_slot: String = ""  # 被 AI 改写的选项槽位
+var ai_rewritten_option_text: String = ""  # AI 改写后的文本
+var audio_enabled: bool = true           # 音效开关
+```
+
+### dominant_trait 计算规则
+
+第一版计算规则：
+
+```text
+如果 doubt 最大 → "doubt"
+如果 control 最大 → "control"
+如果 obedience 最大 → "obedience"
+如果三者平局或接近 → "mixed"
+```
+
+`anomaly` 不作为主倾向，它表示叙事噪声/系统失真值，影响文本语气、设备失真、刷新强度、音效失真和 AI 触发条件。
+
+> v0.1 完整原型：GameState 当前已实现，后续不再移除字段，只增量添加。
 
 ## Story Node 数据结构
 
@@ -147,7 +175,9 @@ clock_state:
 - invalid
 ```
 
-## MockAIManager 职责
+## MockAI / AI 引导系统（v0.2）
+
+### MockAIManager（v0.1 现有）
 
 MockAIManager 不是真 AI，而是预制文本读取器。
 
@@ -159,7 +189,57 @@ MockAIManager 不是真 AI，而是预制文本读取器。
 4. 处理选项点击后的 state_delta
 5. 更新 next_node
 
-## 未来接入真实 AI 的接口
+### v0.2 AI 定位
+
+v0.2 AI 是"AI 原生雏形"，不是完整 AI 原生系统。
+
+v0.2 AI 只能做：
+
+1. 动态引导文本（根据玩家状态生成系统解释）
+2. 系统解释文本（总结玩家上一行为）
+3. 受限选项显示文本改写（改写一个选项的显示文字）
+
+v0.2 AI 不能做：
+
+1. 自由输入
+2. 生成完整主线
+3. 生成结局
+4. 决定 state_delta / next_node / ending_id
+5. 新增角色 / 场景 / 选项数量
+6. 绕过本地验证
+7. 决定结局类型
+
+### AI 幻觉控制
+
+AI 只能提到允许对象：
+
+```text
+电子公告屏 / 时钟 / 广播灯 / 出口门 / 末班车站
+记录 / 解释请求 / 目的地 / 离站许可 / 系统建议
+最终判断 / 叙事噪声 / 校准 / 选择历史
+```
+
+禁止提到：
+
+```text
+列车员 / 乘客 / 怪物 / 真实城市 / 车厢内部
+站外场景 / 隐藏房间 / 真实逃脱路线 / 第四结局
+新 NPC / 不在 UI 中存在的物件
+```
+
+### AI 上下文控制
+
+每次 AI 请求必须使用显式状态包，不依赖模型历史记忆。重新开始时必须生成新的 session_id，清空本地 AI 缓存。
+
+### AI 延时与 fallback
+
+AI 请求可能延时 3-4 秒，等待期间显示"系统正在解释上一行为……"并禁用相关按钮。4 秒超时使用 Mock fallback。
+
+### 默认模式
+
+v0.2 默认不依赖真实 API。默认使用 Mock AI 动态引导 + Mock 选项改写。API 仅作实验开关。
+
+### 真实 AI 接口（未来扩展）
 
 未来真实 AI 只能做：
 

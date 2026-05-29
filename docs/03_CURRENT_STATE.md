@@ -1,9 +1,23 @@
 # 当前项目状态
 
-> 最后更新：GitHub Sync Setup
+> 最后更新：v0.2 规划就绪
 
-- 当前项目已准备通过 GitHub 在 Fedora、Windows、WSL 之间同步。
-- Fedora 端作为当前提交来源。
-- Windows 端可通过 git clone 或 git pull 获取项目。
-- WSL 端 OpenCode 可通过独立 clone 的项目目录继续开发。
-- 后续所有 Agent 应先读取 docs/ 和 README.md。
+## v0.1 完成状态
+
+- 阶段 0 → 2.8 全部完成
+- 三问校准 / 三轮主线 / 四个调查物 / 三个结局 / 重新开始 闭环已跑通
+- JSON 数据驱动管线已就位
+- 无需真实 API 可完整运行
+
+## v0.2 规划状态
+
+- `docs/101_v0_2_requirement_spec.md` — 需求规格已冻结 ✓
+- `docs/102_v0_2_opencode_execution_constraints.md` — 执行约束已生效 ✓
+- 范围冻结：不新增第四轮 / 第四结局 / 自由输入 / NPC / 复杂地图
+- 待开始：v0.2-1 引导与设备基础
+
+## 当前约束
+
+- 所有修改必须按 v0.2 六阶段顺序推进
+- 每个阶段必须生成报告后才能进入下一阶段
+- 必须先读 docs/101、docs/102，再开始任何代码或资源修改
