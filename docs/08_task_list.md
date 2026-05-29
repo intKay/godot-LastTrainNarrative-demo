@@ -62,29 +62,33 @@
 2. `data/interactables.json` 追加 clock / broadcast_light / exit_gate 三个对象
 3. `scripts/station_scene.gd` 新增 `_get_interactable_text` + 3 个调查 handler
 
-## 待完成
-4. 四个调查物按轮次差异化文本
+### 阶段 2.5：优化调查物时机与文本刷新反馈 ✅
 
-### 阶段 2.5：扩展完整三问校准 📋
+1. `scripts/station_scene.gd` 新增 `interactable_stage_id` 解耦调查物查表；`_make_choice` 选择后提前推进
+2. `scripts/station_scene.gd` 新增 `_flash_story_label` + `text_tween`，每轮 visible_text 加载时闪烁
+
+## 待完成
+
+### 阶段 2.6：扩展完整三问校准 📋
 
 1. `calibration_questions.json` 扩展为 3 问
 2. `calibration_screen.gd` 支持多问循环
 3. 第二问和第三问影响车站初始状态
 
-### 阶段 2.6：三个低保真结局 📋
+### 阶段 2.7：三个低保真结局 📋
 
 1. 创建 `endings.json`
 2. 创建结局判断逻辑（按状态值最高维度触发）
 3. 顺从结局 / 怀疑结局 / 控制结局文本
 
-### 阶段 2.7：低保真 UI / 文本打磨 📋
+### 阶段 2.8：低保真 UI / 文本打磨 📋
 
 1. 统一视觉风格
 2. 按钮悬停反馈
 3. 异常抖动效果
 4. 文本一致性和张力检查
 
-### 阶段 2.8：完整试玩与修正 📋
+### 阶段 2.9：完整试玩与修正 📋
 
 1. 按照 v0.1 完整原型试玩检查表测试
 2. 修复发现的 Bug

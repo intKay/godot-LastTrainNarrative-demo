@@ -10,6 +10,8 @@ var interactables_data: Dictionary = {}
 var current_round_id: String = "station_round_1"
 var next_round_id: String = ""
 var has_next_round: bool = false
+var interactable_stage_id: String = "station_round_1"
+var text_tween: Tween
 
 @onready var notice_btn: Button = $RootMargin/VBox/StationHBox/NoticeBoardButton
 @onready var broadcast_light: ColorRect = $RootMargin/VBox/StationHBox/BroadcastLight
@@ -55,12 +57,14 @@ func _load_data() -> void:
 
 func _load_round_data(round_id: String) -> void:
 	current_round_id = round_id
+	interactable_stage_id = round_id
 	round_options = []
 	has_next_round = false
 	for node in story_data:
 		if node.node_id == round_id:
 			if node.has("visible_text"):
 				story_label.text = node.visible_text
+				_flash_story_label()
 			if node.has("options"):
 				round_options = node.options
 				for opt in node.options:
@@ -97,9 +101,10 @@ func _make_choice(index: int) -> void:
 	_update_broadcast_light(Color(c[0], c[1], c[2]))
 
 	next_round_id = opt.get("next_node", "")
-	phase = Phase.FINISHED
 	if next_round_id != "":
+		interactable_stage_id = next_round_id
 		_show_continue()
+	phase = Phase.FINISHED
 
 
 func _show_continue() -> void:
@@ -200,7 +205,16 @@ func _on_choice_d() -> void:
 func _get_interactable_text(object_id: String) -> String:
 	var obj = interactables_data.get(object_id, {})
 	var texts = obj.get("texts_by_stage", {})
-	return texts.get(current_round_id, "")
+	return texts.get(interactable_stage_id, "")
+
+
+func _flash_story_label() -> void:
+	if text_tween:
+		text_tween.kill()
+	story_label.modulate.a = 1.0
+	text_tween = create_tween()
+	text_tween.tween_property(story_label, "modulate:a", 0.65, 0.08)
+	text_tween.tween_property(story_label, "modulate:a", 1.0, 0.12)
 
 
 func _on_clock() -> void:
