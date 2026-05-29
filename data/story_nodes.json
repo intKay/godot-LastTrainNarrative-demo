@@ -115,7 +115,7 @@
   },
   {
     "node_id": "station_round_3",
-    "visible_text": "电子公告屏停止刷新。\n广播灯保持常亮。\n出口指示牌第一次显示了你的选择记录。",
+    "visible_text": "电子公告屏停止刷新。\n广播灯保持常亮。\n出口指示牌亮起。上面记录着你的每一次选择。",
     "options": [
       {
         "id": "question_records",

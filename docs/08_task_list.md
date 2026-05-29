@@ -79,14 +79,13 @@
 2. `scripts/ending_screen.gd` 按状态值最高维度判断结局
 3. `station_scene.gd` 第三轮后触发"查看最终判断"→ ending_screen，`game_state.gd` 新增 `reset()`
 
+### 阶段 2.8：文本精修 + 低保真 UI 统一 ✅
+
+1. `data/endings.json` 三结局正文加意象描写（灯光熄灭/问题列表/风倒错）
+2. `data/story_nodes.json` round_3 visible_text 第三行措辞修正
+3. `scenes/ending_screen.tscn` BodyLabel 字号 16→18，居中
+
 ## 待完成
-
-### 阶段 2.8：低保真 UI / 文本打磨 📋
-
-1. 统一视觉风格
-2. 按钮悬停反馈
-3. 异常抖动效果
-4. 文本一致性和张力检查
 
 ### 阶段 2.9：完整试玩与修正 📋
 
