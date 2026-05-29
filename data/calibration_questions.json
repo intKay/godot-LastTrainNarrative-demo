@@ -9,10 +9,8 @@
         "last_choice_label": "灯",
         "initial_world_hint": "light",
         "state_delta": {
-          "doubt": 0,
-          "control": 0,
-          "obedience": 0,
-          "anomaly": 0
+          "doubt": 1,
+          "anomaly": 1
         },
         "set_flags": ["calib_light"]
       },
@@ -22,10 +20,7 @@
         "last_choice_label": "门",
         "initial_world_hint": "door",
         "state_delta": {
-          "doubt": 0,
-          "control": 0,
-          "obedience": 0,
-          "anomaly": 0
+          "control": 1
         },
         "set_flags": ["calib_door"]
       },
@@ -35,10 +30,7 @@
         "last_choice_label": "广播",
         "initial_world_hint": "broadcast",
         "state_delta": {
-          "doubt": 0,
-          "control": 0,
-          "obedience": 0,
-          "anomaly": 0
+          "obedience": 1
         },
         "set_flags": ["calib_broadcast"]
       },
@@ -48,12 +40,93 @@
         "last_choice_label": "车票",
         "initial_world_hint": "ticket",
         "state_delta": {
-          "doubt": 0,
-          "control": 0,
-          "obedience": 0,
-          "anomaly": 0
+          "anomaly": 1
         },
         "set_flags": ["calib_ticket"]
+      }
+    ]
+  },
+  {
+    "question_id": "calibration_2",
+    "prompt": "进入场景后，主角最先确认什么？",
+    "options": [
+      {
+        "id": "check_exit",
+        "text": "A. 出口是否真实存在",
+        "last_choice_label": "确认出口",
+        "state_delta": {
+          "control": 1
+        },
+        "set_flags": ["calib_check_exit"]
+      },
+      {
+        "id": "check_broadcast",
+        "text": "B. 广播是否在回应自己",
+        "last_choice_label": "确认广播",
+        "state_delta": {
+          "doubt": 1
+        },
+        "set_flags": ["calib_check_broadcast"]
+      },
+      {
+        "id": "check_clock",
+        "text": "C. 时钟是否还在走",
+        "last_choice_label": "确认时钟",
+        "state_delta": {
+          "obedience": 1
+        },
+        "set_flags": ["calib_check_clock"]
+      },
+      {
+        "id": "check_board",
+        "text": "D. 公告屏是否显示目的地",
+        "last_choice_label": "确认公告屏",
+        "state_delta": {
+          "anomaly": 1
+        },
+        "set_flags": ["calib_check_board"]
+      }
+    ]
+  },
+  {
+    "question_id": "calibration_3",
+    "prompt": "当故事开始偏离时，主角保留什么？",
+    "options": [
+      {
+        "id": "keep_waiting",
+        "text": "A. 继续等待的理由",
+        "last_choice_label": "保留等待",
+        "state_delta": {
+          "obedience": 1
+        },
+        "set_flags": ["calib_keep_waiting"]
+      },
+      {
+        "id": "keep_questioning",
+        "text": "B. 质疑规则的习惯",
+        "last_choice_label": "保留质疑",
+        "state_delta": {
+          "doubt": 1
+        },
+        "set_flags": ["calib_keep_questioning"]
+      },
+      {
+        "id": "keep_changing",
+        "text": "C. 修改结果的冲动",
+        "last_choice_label": "保留修改",
+        "state_delta": {
+          "control": 1
+        },
+        "set_flags": ["calib_keep_changing"]
+      },
+      {
+        "id": "keep_silence",
+        "text": "D. 不被记录的沉默",
+        "last_choice_label": "保留沉默",
+        "state_delta": {
+          "anomaly": 1
+        },
+        "set_flags": ["calib_keep_silence"]
       }
     ]
   }

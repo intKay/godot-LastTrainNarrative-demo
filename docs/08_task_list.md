@@ -67,13 +67,13 @@
 1. `scripts/station_scene.gd` 新增 `interactable_stage_id` 解耦调查物查表；`_make_choice` 选择后提前推进
 2. `scripts/station_scene.gd` 新增 `_flash_story_label` + `text_tween`，每轮 visible_text 加载时闪烁
 
+### 阶段 2.6：扩展完整三问校准 ✅
+
+1. `data/calibration_questions.json` 扩展为 3 问，每问 4 选项含 state_delta
+2. `scripts/calibration_screen.gd` 重写为多问循环（逐问显示→选择→delta→下一问→完成切场景）
+3. `state_delta`/`set_flags` 实际生效，校准首次对状态系统产生影响
+
 ## 待完成
-
-### 阶段 2.6：扩展完整三问校准 📋
-
-1. `calibration_questions.json` 扩展为 3 问
-2. `calibration_screen.gd` 支持多问循环
-3. 第二问和第三问影响车站初始状态
 
 ### 阶段 2.7：三个低保真结局 📋
 
